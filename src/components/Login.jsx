@@ -47,7 +47,6 @@ const Login = () => {
                   name="email"
                   type="email"
                   autoComplete="email"
-                  required
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.email}
@@ -69,7 +68,6 @@ const Login = () => {
                   name="password"
                   type="password"
                   autoComplete="current-password"
-                  required
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.password}

@@ -108,7 +108,6 @@ const Register = () => {
                   name="email"
                   type="email"
                   autoComplete="email"
-                  // required
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.email}
@@ -168,7 +167,6 @@ const Register = () => {
                   name="password"
                   type="password"
                   autoComplete="current-password"
-                  required
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.password}
@@ -189,7 +187,6 @@ const Register = () => {
                   name="confirmPassword"
                   type="password"
                   autoComplete="current-password"
-                  required
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.confirmPassword}

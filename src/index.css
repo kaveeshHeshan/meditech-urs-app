@@ -60,6 +60,7 @@ body{
 
 .profile-update .radio-inputs input{
   position: absolute;
+  cursor: pointer;
   width: 135px;
   z-index: 2;
   opacity: 0;
@@ -67,7 +68,7 @@ body{
 
 .profile-update .radio-inputs .radio-title{
   height: 40px;
-  width: 135px;
+  width: 126px;
   display: flex;
   flex-direction: column;
   align-items: center;
