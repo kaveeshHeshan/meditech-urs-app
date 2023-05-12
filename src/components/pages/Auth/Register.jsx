@@ -78,22 +78,15 @@ const Register = () => {
 
       axios.post('https://mditest.elifeamerica.com/api/v1/register', userData)
       .then(res=>{
-          console.log("Success Part");
-          console.log(res);
           if (res.data.status_code == 200 && res.data.status == 'OK') {
             window.location.replace('/success');
           }
       }).catch(error=>{
-          console.log("Error Part");
-          console.log(error);
+          
       });
     },
   });
 
-  function redirectPage(url) {
-    const nav = useNavigate();
-    nav(url);
-  }
   return (
     <>
     <div className="mt-10 flex mb-3 text-white text-left lg:mx-[30rem] sm:mx-24">
