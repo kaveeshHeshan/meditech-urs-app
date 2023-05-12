@@ -1,19 +1,24 @@
-import React from 'react';
+import {useState, React} from 'react';
 import { BiChevronLeft } from "react-icons/bi";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import axios from 'axios';
 
 const Register = () => {
+
+  const [uniqueEmailvalidation, setUniqueEmailvalidation] = useState(false);
+
   const formik = useFormik({
     initialValues: {
+      email: '',
       firstName: '',
       secondName: '',
       countryCode: '',
       mobileNumber: '',
+      dob: '',
       password: '',
       confirmPassword: '',
-      email: '',
     },
     validationSchema: Yup.object({
       firstName: Yup.string()
@@ -24,7 +29,24 @@ const Register = () => {
         .required('The second name field is required'),
       email: Yup.string()
         .email('Invalid email address')
-        .required('The email field is required'),
+        .required('The email field is required')
+        .test('Unique Email', 'Email address is already exist in the system. Please try with different email address', // <- key, message
+                function (value) {
+                    return new Promise((resolve, reject) => {
+                        axios.get(`https://mditest.elifeamerica.com/api/v1/email/check/${value}`)
+                            .then((res) => {
+                                if (res.data.result.exist == true) {
+                                  resolve(false);
+                                } else {
+                                  resolve(true);
+                                }
+                            })
+                            .catch((error) => {
+                                // block
+                            })
+                    })
+                }
+            ),
       countryCode: Yup.number()
         .typeError("That doesn't look like a phone number")
         .positive("A phone number can't be negative")
@@ -35,6 +57,8 @@ const Register = () => {
         .positive("A phone number can't start with a minus")
         .integer("A phone number can't include a decimal point")
         .required('The mobile number field is required'),
+      dob:Yup.date()
+        .required('The date of birth field is required'),
       password: Yup.string()
         .required('The password field is required'),
       confirmPassword: Yup.string()
@@ -42,9 +66,34 @@ const Register = () => {
         .required('The confirm password field is required'),
     }),
     onSubmit: values => {
-      alert(JSON.stringify(values, null, 2));
+      // Data object
+      const userData = {
+        email : values.email,
+        first_name : values.firstName,
+        last_name : values.secondName,
+        password : values.password,
+        mobile_number: "+" + values.countryCode + values.mobileNumber,
+        dob: values.dob,
+      }
+
+      axios.post('https://mditest.elifeamerica.com/api/v1/register', userData)
+      .then(res=>{
+          console.log("Success Part");
+          console.log(res);
+          if (res.data.status_code == 200 && res.data.status == 'OK') {
+            window.location.replace('/success');
+          }
+      }).catch(error=>{
+          console.log("Error Part");
+          console.log(error);
+      });
     },
   });
+
+  function redirectPage(url) {
+    const nav = useNavigate();
+    nav(url);
+  }
   return (
     <>
     <div className="mt-10 flex mb-3 text-white text-left lg:mx-[30rem] sm:mx-24">
@@ -114,6 +163,7 @@ const Register = () => {
                   className={`${formik.touched.email && formik.errors.email ? 'outline-none border-2 border-rose-500' : null } block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6`}
                 />
                 {formik.touched.email && formik.errors.email ? <div className='text-rose-600 pl-2 pt-1 text-[14px]'>{formik.errors.email}</div> : null}
+                {uniqueEmailvalidation ? <div className='text-rose-600 pl-2 pt-1 text-[14px]'>Email is already in use.</div> : null}
               </div>
             </div>
             <div className="">
@@ -153,6 +203,25 @@ const Register = () => {
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div>
+              <label htmlFor="dob" className="text-[17px] block text-left font-medium leading-6 text-gray-900">
+                Date of Birth
+              </label>
+              <div className="mt-2">
+                <input
+                  id="dob"
+                  name="dob"
+                  type="date"
+                  autoComplete="dob"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.dob}
+                  className={`${formik.touched.dob && formik.errors.dob ? 'outline-none border-2 border-rose-500' : null } block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6`}
+                />
+                {formik.touched.dob && formik.errors.dob ? <div className='text-rose-600 pl-2 pt-1 text-[14px]'>{formik.errors.dob}</div> : null}
+              </div>
             </div>
 
             <div>

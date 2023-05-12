@@ -44,6 +44,17 @@ body{
   transition: ease-in-out .2s;
 }
 
+.success-msg-btn {
+  height: 60px;
+  background-color: var(--submit-btn-color);
+  transition: ease-in-out .2s;
+}
+
+.success-msg-btn:hover {
+  background-color: var(--darker-submit-btn-color);
+  transition: ease-in-out .2s;
+}
+
 .login .login-submit-btn:hover,
 .profile-update .profile-update-submit-btn:hover {
   background-color: var(--darker-submit-btn-color);

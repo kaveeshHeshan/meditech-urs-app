@@ -3,7 +3,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 // Component imports
-import Navbar from './inc/Navbar'
+import Navbar from '../../inc/Navbar'
 
 
 const ProfileUpdate = () => {
