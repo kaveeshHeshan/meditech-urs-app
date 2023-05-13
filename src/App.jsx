@@ -7,9 +7,7 @@ import {getUser} from './store/Auth';
 import Cookies from 'js-cookie';
 
 function App() {
-  const [count, setCount] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
 
   const token = Cookies.get('token');
   const auth = useSelector(state => state.auth)
@@ -34,7 +32,7 @@ function App() {
   }, [])
 
   if (isLoading) {
-    return <p>Loading ...</p>
+    return <svg className='animate-spin h-5 w-5 mr-3 ...' viewBox='0 0 24 24'></svg>;
   }
   return (
     <>

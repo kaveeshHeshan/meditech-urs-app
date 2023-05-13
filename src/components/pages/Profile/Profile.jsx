@@ -1,12 +1,96 @@
-import React from 'react';
+import {React, ChangeEvent} from 'react';
 import Navbar from '../../inc/Navbar'
 import { useSelector } from 'react-redux';
+import Cookies from 'js-cookie';
+import axios from 'axios';
 
 const Profile = () => {
 
     // Retrieve user data from redux store
-  const auth = useSelector((state) => state.auth);
+    const auth = useSelector((state) => state.auth);
+
+    // Retrieve token
+    const token = Cookies.get('token');
     
+    const imageUpload = (e) => {
+        // console.log(e.target.files[0]);
+        const selectedImage = e.target.files[0];
+
+        // console.log("Selected Image :");
+        // console.log(selectedImage);
+
+        const formData = new FormData();
+        formData.append("profile_image", selectedImage);
+
+        // Profile Image preview
+        const objectUrl = URL.createObjectURL(selectedImage)
+        $('#profile-img').attr("src", objectUrl);
+        console.log(objectUrl);
+
+        // console.log("Form Data :");
+        // console.log(formData);
+
+        Swal.fire({
+            imageUrl: objectUrl,
+            imageHeight: 126,
+            imageClass: 'img-rounded',
+            title: 'Are you sure?',
+            text: "Do you want to save this image as your profile image?",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, Save it!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+
+                // Profile Image Update request
+                axios.post("https://mditest.elifeamerica.com/api/v1/profile/avatar", formData, {
+                    headers:{
+                        'Authorization': `Bearer ${token}`
+                    }
+                }).then(res=>{
+                    console.log("Success");
+                    console.log(res);
+                    if (res.status == 200 && res.data.status == 'OK') {
+                        
+                        Swal.fire({
+                            toast:true,
+                            position: 'bottom-end',
+                            icon: 'success',
+                            title: 'Profile image updation is successful!',
+                            text: 'The page will be reloaded to see the changes now.',
+                            showConfirmButton: false,
+                            timer: 3500,
+                            timerProgressBar:true,
+                        });
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 4000);
+                    }
+                }).catch(error=>{
+                    console.log("Error");
+                    console.log(error);
+                    Swal.fire({
+                        toast:true,
+                        position: 'bottom-end',
+                        icon: 'success',
+                        title: 'OOPs!',
+                        text: 'Something went wrong!.',
+                        showConfirmButton: false,
+                        timer: 3500,
+                        timerProgressBar:true,
+                    });
+                });
+
+                setTimeout(() => {
+                    // window.location.reload();
+                }, 4000);
+            }
+          });
+    }
+    // function imageUpload(e) {
+    
+    // }
   return (
     <>
     <div className="bg-white h-screen profile">
@@ -15,7 +99,17 @@ const Profile = () => {
             <div className='bg-white sm:px-6 lg:py-6 lg:px-44 lg:py-44'>
                 <div className="flex px-4 sm:px-0 justify-center">
                     <div className="">
-                        <img className='rounded-full' style={{objectFit:"cover", marginLeft:"10px", height:"126px", width:"126px"}} src={auth.user.patient.profile_image.resource != null ? auth.user.patient.profile_image.resource : "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8dXNlcnxlbnwwfHwwfHw%3D&w=1000&q=80"} alt="" />
+                        <img id='profile-img' className='rounded-full' style={{objectFit:"cover", marginLeft:"10px", height:"126px", width:"126px"}} src={auth.user.patient.profile_image.resource != null ? auth.user.patient.profile_image.resource : "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8dXNlcnxlbnwwfHwwfHw%3D&w=1000&q=80"} alt="" />
+                        <label className="block">
+                            <span className="sr-only">Choose profile photo</span>
+                            <input onChange={imageUpload} type="file" className="block w-full text-sm text-slate-500
+                                file:mr-4 file:py-2 file:px-4
+                                file:rounded-full file:border-0
+                                file:text-sm file:font-semibold
+                                file:bg-violet-50 file:text-dark
+                                hover:file:bg-dark-100"
+                            />
+                        </label>
                     </div>
                     <div className="pl-4 pt-7 text-[30px] text-left">
                         <h3 className="font-semibold leading-7 text-gray-900">Welcome</h3>

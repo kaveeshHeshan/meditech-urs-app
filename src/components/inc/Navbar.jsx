@@ -41,8 +41,8 @@ const Navbar = (props) => {
                               <i className='bx bxs-user'></i> &nbsp; Edit Profile
                           </Link>
                       </div>
-                      <div className="user-link">
-                          <button type='button' onClick={_logout}>
+                      <div className="user-link" style={{cursor:"pointer"}}>
+                          <button type='button' style={{color:"#000", padding: "13px"}} onClick={_logout}>
                               <i className='bx bx-log-out-circle'></i> &nbsp; Logout
                           </button>
                       </div>

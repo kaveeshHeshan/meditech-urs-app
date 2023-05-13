@@ -147,3 +147,13 @@ body{
 .dropdown-content.active {
   display: block;
 }
+
+.img-rounded {
+  border-radius: 50%;
+}
+
+.profile input[type=file] {
+  margin-left: 20px;
+  width: 110px;
+  color: transparent;
+}
