@@ -1,20 +1,28 @@
 import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { useSelector } from 'react-redux';
 
 // Component imports
 import Navbar from '../../inc/Navbar'
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
 
 const ProfileUpdate = () => {
 
+    const auth = useSelector((state) => state.auth);
+    const token = Cookies.get('token');
+    console.log("From Profile Update");
+    console.log(auth.user);
+
     const formik = useFormik({
         initialValues: {
-            firstName: '',
-            secondName: '',
-            email: '',
-            dob: '',
-            gender: '',
+            firstName: auth.user.patient.first_name,
+            secondName: auth.user.patient.last_name,
+            email: auth.user.patient.email,
+            dob: auth.user.patient.dob,
+            gender: auth.user.patient.gender,
         },
         validationSchema: Yup.object({
             firstName: Yup.string()
@@ -32,14 +40,58 @@ const ProfileUpdate = () => {
                 .required('The gender field is required'),
         }),
         onSubmit: values => {
-          alert(JSON.stringify(values, null, 2));
+            const userUpdatedData = {
+                first_name : values.firstName,
+                last_name : values.secondName,
+                email : values.email,
+                dob: values.dob,
+                gender: values.gender
+            }
+
+            axios.put("https://mditest.elifeamerica.com/api/v1/profile", userUpdatedData, {
+                headers:{
+                    'Authorization': `Bearer ${token}`
+                }
+            }).then(res=>{
+                console.log("Success");
+                console.log(res);
+                if (res.status == 200 && res.data.status == 'OK') {
+                    
+                    Swal.fire({
+                        toast:true,
+                        position: 'bottom-end',
+                        icon: 'success',
+                        title: 'Profile updation is successful!',
+                        text: 'You will be redirecting to the Profile page now.',
+                        showConfirmButton: false,
+                        timer: 3500,
+                        timerProgressBar:true,
+                    });
+                    setTimeout(() => {
+                        window.location.replace('/profile');
+                    }, 4000);
+                }
+            }).catch(error=>{
+                console.log("Error");
+                console.log(error);
+                Swal.fire({
+                    toast:true,
+                    position: 'bottom-end',
+                    icon: 'success',
+                    title: 'OOPs!',
+                    text: 'Something went wrong!.',
+                    showConfirmButton: false,
+                    timer: 3500,
+                    timerProgressBar:true,
+                });
+            });
         },
       });
 
   return (
     <>
     <div className="bg-white h-full profile">
-        <Navbar/>
+        <Navbar user={auth.user}/>
         <div className='profile-update'>
             <div className="text-center text-3xl">Edit Profile</div>
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-md">
@@ -140,6 +192,7 @@ const ProfileUpdate = () => {
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     // value={formik.values.firstName}
+                                    // checked={formik.values.gender == 'male' ? checked : null}
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                                 <div className="radio-title">
@@ -155,6 +208,7 @@ const ProfileUpdate = () => {
                                     value="female"
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
+                                    // checked={formik.values.gender == 'female' ? checked : null}
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                                 <div className="radio-title">
@@ -170,6 +224,7 @@ const ProfileUpdate = () => {
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     autoComplete="gender"
+                                    // checked={formik.values.gender == 'other' ? checked : null}
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                                 <div className="radio-title">

@@ -19,22 +19,22 @@ const Profile = () => {
                     </div>
                     <div className="pl-4 pt-7 text-[30px] text-left">
                         <h3 className="font-semibold leading-7 text-gray-900">Welcome</h3>
-                        <p className="mt-1 max-w-2xl leading-6 text-gray-500">{auth.user != null ? auth.user.name : 'User'}</p>
+                        <p className="mt-1 max-w-2xl leading-6 text-gray-500">{auth.user.patient.first_name != null ? auth.user.patient.first_name : 'Unknown'} {auth.user.patient.last_name != null ? auth.user.patient.last_name : 'User'}</p>
                     </div>
                 </div>
                 <div className="text-[17px] mt-6 sm:mx-36 lg:mx-96">
                     <dl className="">
                         <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                            <dt className="font-medium leading-6 text-gray-900 text-left">Email address</dt>
+                            <d className="font-medium leading-6 text-gray-900 text-left">Email address</d>
                             <dd className="mt-1 leading-6 text-gray-700 sm:col-span-2 sm:mt-0 text-right">{auth.user.patient.email != null ? auth.user.patient.email : 'Unknown Email'}</dd>
                         </div>
                         <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                             <dt className="font-medium leading-6 text-gray-900 text-left">Name</dt>
-                            <dd className="mt-1 leading-6 text-gray-700 sm:col-span-2 sm:mt-0 text-right">{auth.user != null ? auth.user.name : 'User'}</dd>
+                            <dd className="mt-1 leading-6 text-gray-700 sm:col-span-2 sm:mt-0 text-right normal-case" style={{textTransform:"capitalize"}}>{auth.user.patient.first_name != null ? auth.user.patient.first_name : 'Unknown'} {auth.user.patient.last_name != null ? auth.user.patient.last_name : 'User'}</dd>
                         </div>
                         <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                             <dt className="font-medium leading-6 text-gray-900 text-left">Gender</dt>
-                            <dd className="mt-1 leading-6 text-gray-700 sm:col-span-2 sm:mt-0 text-right">{auth.user.patient.gender != null ? auth.user.patient.gender : 'Unknown'}</dd>
+                            <dd className="mt-1 leading-6 text-gray-700 sm:col-span-2 sm:mt-0 text-right normal-case" style={{textTransform:"capitalize"}}>{auth.user.patient.gender != null ? auth.user.patient.gender : 'Unknown'}</dd>
                         </div>
                         <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                             <dt className="font-medium leading-6 text-gray-900 text-left">Date of Birth</dt>
