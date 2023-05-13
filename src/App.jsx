@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 
-import Header from './components/inc/Header';
 import './App.css'
 import { Outlet } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -30,10 +29,6 @@ function App() {
       }
   }
 
-  // useEffect(() => {
-  //   fetchUserData();
-  // }, [])
-
   useEffect(() => {
     fetchUserData()
   }, [])
@@ -44,7 +39,6 @@ function App() {
   return (
     <>
       <div>
-        {/* <Header/> */}
         <Outlet />
       </div>
       

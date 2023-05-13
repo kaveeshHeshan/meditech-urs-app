@@ -13,6 +13,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const [loginError, setLoginError] = useState(null);
 
+  // validation and summbit with formik
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -26,7 +27,7 @@ const Login = () => {
         .required('The password field is required'),
     }),
     onSubmit: values => {
-      // alert(JSON.stringify(values, null, 2));
+      // data for the login request
       const userData = {
         client_id: 4,
         username : values.email,
@@ -35,9 +36,9 @@ const Login = () => {
         grant_type: "password",
       }
 
+      // Login request
       axios.post("https://mditest.elifeamerica.com/oauth/token", userData)
       .then(res=>{
-        // console.log(res.data.access_token);
           if (res.status == 200 && res.data != null && res.data.access_token != null) {
             Cookies.set('token', res.data.access_token)
             axios.get('https://mditest.elifeamerica.com/api/v1/auth/user',{
@@ -52,7 +53,11 @@ const Login = () => {
       }).catch(error=>{
           console.log(error);
           if (error.response.data.error == "invalid_grant") {
+
+            // Login fform error message
             setLoginError(error.response.data.message);
+
+            // Hide login error after sometime
             setTimeout(() => {
               setLoginError(null)
             }, 3000);

@@ -10,6 +10,8 @@ const Navbar = (props) => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // Dropdown toggle functionality
   const showDropDownMenu = (ev) => {
       ev.preventDefault();
     console.log("Clicked");
@@ -18,6 +20,7 @@ const Navbar = (props) => {
 
   }
 
+  // Logout functionality
   function _logout() {
     Cookies.remove("token");
     dispatch(logout())

@@ -4,9 +4,9 @@ import { useSelector } from 'react-redux';
 
 const Profile = () => {
 
+    // Retrieve user data from redux store
   const auth = useSelector((state) => state.auth);
-    console.log("From Profile");
-    console.log(auth.user);
+    
   return (
     <>
     <div className="bg-white h-screen profile">

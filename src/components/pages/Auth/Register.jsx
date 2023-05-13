@@ -9,6 +9,7 @@ const Register = () => {
 
   const [uniqueEmailvalidation, setUniqueEmailvalidation] = useState(false);
 
+  // validation and summbit with formik
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -76,6 +77,7 @@ const Register = () => {
         dob: values.dob,
       }
 
+      // Register request
       axios.post("https://mditest.elifeamerica.com/api/v1/register", userData)
       .then(res=>{
           if (res.data.status_code == 200 && res.data.status == 'OK') {

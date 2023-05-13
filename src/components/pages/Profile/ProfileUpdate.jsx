@@ -11,11 +11,13 @@ import Cookies from 'js-cookie';
 
 const ProfileUpdate = () => {
 
+    // Retrieve user data from redux store
     const auth = useSelector((state) => state.auth);
-    const token = Cookies.get('token');
-    console.log("From Profile Update");
-    console.log(auth.user);
 
+    // Get token
+    const token = Cookies.get('token');
+
+  // validation and summbit with formik
     const formik = useFormik({
         initialValues: {
             firstName: auth.user.patient.first_name,
