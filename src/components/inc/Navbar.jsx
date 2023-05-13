@@ -13,8 +13,7 @@ const Navbar = (props) => {
 
   // Dropdown toggle functionality
   const showDropDownMenu = (ev) => {
-      ev.preventDefault();
-    console.log("Clicked");
+    ev.preventDefault();
     let dropdownContent = document.querySelector(".dropdown-content");
       dropdownContent.classList.toggle("active");
 

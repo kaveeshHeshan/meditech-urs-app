@@ -13,11 +13,7 @@ const Profile = () => {
     const token = Cookies.get('token');
     
     const imageUpload = (e) => {
-        // console.log(e.target.files[0]);
         const selectedImage = e.target.files[0];
-
-        // console.log("Selected Image :");
-        // console.log(selectedImage);
 
         const formData = new FormData();
         formData.append("profile_image", selectedImage);
@@ -25,10 +21,6 @@ const Profile = () => {
         // Profile Image preview
         const objectUrl = URL.createObjectURL(selectedImage)
         $('#profile-img').attr("src", objectUrl);
-        console.log(objectUrl);
-
-        // console.log("Form Data :");
-        // console.log(formData);
 
         Swal.fire({
             imageUrl: objectUrl,
@@ -49,8 +41,6 @@ const Profile = () => {
                         'Authorization': `Bearer ${token}`
                     }
                 }).then(res=>{
-                    console.log("Success");
-                    console.log(res);
                     if (res.status == 200 && res.data.status == 'OK') {
                         
                         Swal.fire({
@@ -68,8 +58,7 @@ const Profile = () => {
                         }, 4000);
                     }
                 }).catch(error=>{
-                    console.log("Error");
-                    console.log(error);
+
                     Swal.fire({
                         toast:true,
                         position: 'bottom-end',
@@ -95,10 +84,10 @@ const Profile = () => {
     <>
     <div className="bg-white h-screen profile">
         <Navbar user={auth.user}/>
-        <div className=''>
+        <div>
             <div className='bg-white sm:px-6 lg:py-6 lg:px-44 lg:py-44'>
                 <div className="flex px-4 sm:px-0 justify-center">
-                    <div className="">
+                    <div>
                         <img id='profile-img' className='rounded-full' style={{objectFit:"cover", marginLeft:"10px", height:"126px", width:"126px"}} src={auth.user.patient.profile_image.resource != null ? auth.user.patient.profile_image.resource : "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8dXNlcnxlbnwwfHwwfHw%3D&w=1000&q=80"} alt="" />
                         <label className="block">
                             <span className="sr-only">Choose profile photo</span>
@@ -119,7 +108,7 @@ const Profile = () => {
                 <div className="text-[17px] mt-6 sm:mx-36 lg:mx-96">
                     <dl className="">
                         <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                            <d className="font-medium leading-6 text-gray-900 text-left">Email address</d>
+                            <dt className="font-medium leading-6 text-gray-900 text-left">Email address</dt>
                             <dd className="mt-1 leading-6 text-gray-700 sm:col-span-2 sm:mt-0 text-right">{auth.user.patient.email != null ? auth.user.patient.email : 'Unknown Email'}</dd>
                         </div>
                         <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">

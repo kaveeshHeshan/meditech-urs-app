@@ -14,7 +14,8 @@ function App() {
   const dispatch = useDispatch();
 
   async function fetchUserData() {
-    const res = await fetch('https://mditest.elifeamerica.com/api/v1/auth/user', {
+    if (token) {
+      const res = await fetch('https://mditest.elifeamerica.com/api/v1/auth/user', {
         headers: {
             Authorization: `Bearer ${token}`,
         }
@@ -25,6 +26,9 @@ function App() {
         const user = await res.json()
         dispatch(getUser(user))
       }
+    } else {
+      setIsLoading(false)
+    }
   }
 
   useEffect(() => {

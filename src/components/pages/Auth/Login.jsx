@@ -51,7 +51,6 @@ const Login = () => {
             window.location.replace('/profile');
           }
       }).catch(error=>{
-          console.log(error);
           if (error.response.data.error == "invalid_grant") {
 
             // Login fform error message

@@ -105,7 +105,7 @@ const Register = () => {
           <form className="space-y-5 w-full" action="#" method="POST" onSubmit={formik.handleSubmit} >
             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                 <div className="sm:col-span-3">
-                    <label htmlFor="first-name" className="text-[17px] text-left block font-medium leading-6 text-gray-900">
+                    <label htmlFor="firstName" className="text-[17px] text-left block font-medium leading-6 text-gray-900">
                         First name
                     </label>
                     <div className="mt-2">
@@ -124,7 +124,7 @@ const Register = () => {
                 </div>
 
                 <div className="sm:col-span-3">
-                    <label htmlFor="second-name" className="text-[17px] text-left block font-medium leading-6 text-gray-900">
+                    <label htmlFor="secondName" className="text-[17px] text-left block font-medium leading-6 text-gray-900">
                         Second name
                     </label>
                     <div className="mt-2">
@@ -241,7 +241,7 @@ const Register = () => {
             </div>
             <div>
               <div className="flex items-center justify-between">
-                <label htmlFor="confirm-password" className="text-[17px] block text-left font-medium leading-6 text-gray-900">
+                <label htmlFor="confirmPassword" className="text-[17px] block text-left font-medium leading-6 text-gray-900">
                   Confirm Password
                 </label>
               </div>

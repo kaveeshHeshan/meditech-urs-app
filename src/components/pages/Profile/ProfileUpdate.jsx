@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useSelector } from 'react-redux';
@@ -16,6 +16,18 @@ const ProfileUpdate = () => {
 
     // Get token
     const token = Cookies.get('token');
+
+    useEffect(() => {
+      
+      if (auth.user.patient.gender == 'male') {
+        $( "#gender-male" ).prop( "checked", true );
+      } else if(auth.user.patient.gender == 'female') {
+        $( "#gender-female" ).prop( "checked", true );
+      }else {
+        $( "#gender-other" ).prop( "checked", true );
+      }
+    }, [])
+    
 
   // validation and summbit with formik
     const formik = useFormik({
@@ -55,8 +67,7 @@ const ProfileUpdate = () => {
                     'Authorization': `Bearer ${token}`
                 }
             }).then(res=>{
-                console.log("Success");
-                console.log(res);
+                
                 if (res.status == 200 && res.data.status == 'OK') {
                     
                     Swal.fire({
@@ -74,8 +85,7 @@ const ProfileUpdate = () => {
                     }, 4000);
                 }
             }).catch(error=>{
-                console.log("Error");
-                console.log(error);
+                
                 Swal.fire({
                     toast:true,
                     position: 'bottom-end',
