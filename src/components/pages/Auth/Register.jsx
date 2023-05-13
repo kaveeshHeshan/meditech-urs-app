@@ -76,7 +76,7 @@ const Register = () => {
         dob: values.dob,
       }
 
-      axios.post('https://mditest.elifeamerica.com/api/v1/register', userData)
+      axios.post("https://mditest.elifeamerica.com/api/v1/register", userData)
       .then(res=>{
           if (res.data.status_code == 200 && res.data.status == 'OK') {
             window.location.replace('/success');

@@ -1,9 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import axios from 'axios';
+import { Alert } from '@mui/material';
+import Cookies from 'js-cookie';
+import { useDispatch } from 'react-redux';
+import { getUser } from '../../../store/Auth';
 
 const Login = () => {
+
+  const dispatch = useDispatch();
+  const [loginError, setLoginError] = useState(null);
 
   const formik = useFormik({
     initialValues: {
@@ -18,7 +26,38 @@ const Login = () => {
         .required('The password field is required'),
     }),
     onSubmit: values => {
-      alert(JSON.stringify(values, null, 2));
+      // alert(JSON.stringify(values, null, 2));
+      const userData = {
+        client_id: 4,
+        username : values.email,
+        password : values.password,
+        client_secret: "sfQfhp6tDeGvEp7ZhVwk0MjbpaP55tJ1oJAKuZAE",
+        grant_type: "password",
+      }
+
+      axios.post("https://mditest.elifeamerica.com/oauth/token", userData)
+      .then(res=>{
+        // console.log(res.data.access_token);
+          if (res.status == 200 && res.data != null && res.data.access_token != null) {
+            Cookies.set('token', res.data.access_token)
+            axios.get('https://mditest.elifeamerica.com/api/v1/auth/user',{
+                headers:{
+                    'Authorization': `Bearer ${res.data.access_token}`
+                }
+            }).then(userResponse => {
+              dispatch(getUser(userResponse.data.result))
+            })
+            window.location.replace('/profile');
+          }
+      }).catch(error=>{
+          console.log(error);
+          if (error.response.data.error == "invalid_grant") {
+            setLoginError(error.response.data.message);
+            setTimeout(() => {
+              setLoginError(null)
+            }, 3000);
+          }
+      });
     },
   });
 
@@ -34,6 +73,10 @@ const Login = () => {
             ABC COMPANY
           </h2>
         </div>
+
+        {loginError && loginError != null ? 
+          <Alert className='text-center items-center justify-center mt-7 -mb-7 delay-300 duration-300 ease-in-out' severity="error">{loginError}</Alert>
+         : null}
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-md">
           <form className="space-y-6" action="#" method="POST" onSubmit={formik.handleSubmit}>
